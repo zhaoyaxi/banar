@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <title>收费标准</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,initial-scale=1,maximum-scale=1.0,user-scalable=no" />
+
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="../../css/foundation.min.css" />
+    <script src="../../js/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="../../js/foundation.min.js"></script>
+    <script type="text/javascript" src="../../js/modernizr.js"></script>
+    <script type="text/coffeescript" src="../../js/common.js.coffee"></script>
+    <script src="../../js/coffee-script.js"></script>
+
+    <style>
+        .all {
+            margin-top: 4%;
+            margin-bottom: 5%;
+            padding-bottom: 10%;
+        }
+        .container {
+            text-align: center;
+        }
+        body{
+            font-family: "Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","华文细黑","STHeiti","微软雅黑";
+            background-color: #fff;
+        }
+
+        #container .row{
+            max-width: none;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .table
+        {
+            border-collapse:collapse; /* 关键属性：合并表格内外边框(其实表格边框有2px，外面1px，里面还有1px哦) */
+            border:1px solid #c0c0c0; /* 设置边框属性；样式(solid=实线)、颜色(#999=灰) */
+            border-width:2px 2px 2px 2px; /* 设置边框状粗细：上 右 下 左 = 对应：1px 0 0 1px */
+
+        }
+
+        .table th{border:solid #c0c0c0;border-width:0 1px 1px 0;padding:2px;}
+
+        .table td {border:solid #c0c0c0;border-width:0 1px 1px 0;padding:2px;}
+
+    </style>
+</head>
+<body>
+
+    <!--车型价格表-->
+    <div class="row all small-10">
+        <div class="panel-body">
+            <p>
+                <span style="color: #0081c2">资费说明: </span><hr width="100%"/>
+				<br/>1. 里程标准<br/>按照百度地图来计算，费用以公里为计算单位，首<span id="startLength1"></span>公里按照固定计费；超过<span id="startLength2"></span>公里，不足一公里按照一公里计算。<br/>
+                <br/>2. 以下价格表所列价格不包括高速、过桥、及停车等费用。
+            </p>
+        </div>
+        <!--表格详情-->
+        <table class="table" id="table-line">
+            <tr>
+                <th class="text-center">车型</th>
+                <th id="startLength" class="text-center">起步价(5公里)</th>
+                <th class="text-center">超里程价</th>
+                <th class="text-center">无电梯搬运</th>
+            </tr>
+            <tr id="each-line">
+                <td id="car_name">小面包车</td>
+                <td id="money">20元(10公里)</td>
+                <td id="perL">3元/公里</td>
+                <td >10元/层</td>
+            </tr>
+        </table>
+    </div>
+
+
+</body>
+
+<script>
+    window.onload = function() {
+        getPriceList();
+    }
+
+    /**
+     * 显示数据
+     */
+    function processData(data) {
+        var da = data;
+        $('#startLength').html("起步价(" + da[0]['startLength'] + "公里)");
+        $('#startLength1').html(da[0]['startLength']);
+		$('#startLength2').html(da[0]['startLength']);
+
+        for (var i = 0; i < da.length; i++) {
+            var startPrice = da[i]['startPrice'];
+            var startLength = da[i]['startLength'];
+            var perPrice = da[i]['perPrice'];
+            var perLength = da[i]['perLength'];
+            var name = da[i]['name'];
+            var dimension = da[i]['dimension'];
+
+            var newLine = $('#each-line').clone();
+
+            //填充数据
+            newLine.find('#car_name').html(name);
+            newLine.find('#money').html(startPrice + "元");
+            newLine.find('#perL').html((perPrice / perLength) + "元");
+
+            newLine.attr('id', 'each-line' + (i + 1));
+            $('#table-line').append(newLine);
+        }
+        $('#each-line').addClass('hidden');
+    }
+
+    /**
+     * 获取数据
+     */
+    function getPriceList() {
+        $.ajax({
+            url: "../../index/index.php",
+            data: {
+                action : "getPrice"
+            },
+            type: 'post',
+            dataType: 'json',
+            success: function(data) {
+                processData(data);
+            },
+            error: function(data) {
+                alert("获取失败");
+            }
+        });
+    }
+</script>
+
+</html>
