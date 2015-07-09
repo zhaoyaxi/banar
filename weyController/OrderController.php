@@ -7,6 +7,7 @@
  * Description: 微信接口--订单处理
  */
 include "../class/inc.php";
+include "../backController/include.php";
 
 class OrderController extends BaseController {
 
@@ -16,9 +17,18 @@ class OrderController extends BaseController {
     public function makeOrder($wechat_id, $name, $startTime, $startLoc, $endLoc,
                               $cate_id, $phone, $message, $price, $floorA, $floorB, $coupons) {
         $orderModel = new OrderModel();
-        $orderModel->makeOrder($wechat_id, $name, $startTime, $startLoc, $endLoc,
+        $id = $orderModel->makeOrder($wechat_id, $name, $startTime, $startLoc, $endLoc,
             $cate_id, $phone, $message, $price, $floorA, $floorB,$coupons);
-        echo json_encode(array());
+		$message = new messageModel();
+        if($message->sendMessage5($id)){
+            $this->error = 0;
+            $this->status = 1;
+        }
+        else{
+            $this->error = "信息错误";
+            $this->status = 0;
+        }
+        echo json_encode($this);
     }
 
     /**

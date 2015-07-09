@@ -360,7 +360,7 @@
             </div>
 
         </div>
-        <button type="button" onclick="callpay();" class="btn btn-primary btn-lg make-order"
+        <button type="button" onclick="completeOrder();" class="btn btn-primary btn-lg make-order"
                 style="width:94%;background-color:#FF8A02;
 				      padding: 5px 16px;
 					  font-size: 20px;

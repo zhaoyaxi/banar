@@ -43,10 +43,11 @@ class OrderModel extends BaseModel{
           toFloorCount, real_price) values ({$user_id}, '{$name}', '{$phone}', {$cate_id}, {$price}, {$coupons},
           '{$startLoc}', '{$endLoc}', '{$createTime}', '{$startTime}', '{$message}', {$floorA}, {$floorB}, {$real_price});";
         $this->excuteSQL($sql);
-
+		$last_order_id = mysql_insert_id();
         //消费优惠券
         $sql = "update lb_coupons set isUsed = 1 where user_id = {$user_id} and worth = {$coupons} order by endTime limit 1;";
         $this->excuteSQL($sql);
+		return $last_order_id;
     }
 
     /**
