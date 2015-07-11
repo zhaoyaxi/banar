@@ -33,7 +33,7 @@ var autocomplete = function(keywordObj){
 		height = keywordObj.parentNode.clientHeight;
 	}
 	keywordObj.parentNode.style.minHeight = height +"px";
-	keywordObj.parentNode.style.height = "auto";
+	keywordObj.parentNode.style.height = "100%";
 	keywordObj.onkeyup = keydown;
 	//输入提示
 	function autoSearch() {

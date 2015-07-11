@@ -459,6 +459,7 @@
 
     function selectXMPrice() {
         money = startFloorPrice + endFloorPrice;
+		mbPerKm = 5;
         if (parseInt(priceDistance) > mbStartKm) {
             money += parseInt((parseInt(priceDistance) - mbStartKm) * mbPerKm + parseInt(mbStartMoney));
         } else {
@@ -492,6 +493,7 @@
 
     function selectJBPrice() {
         money = startFloorPrice + endFloorPrice;
+		mbPerKm = 6;
         if (parseInt(priceDistance) > jbStartKm) {
             money += parseInt((parseInt(priceDistance) - jbStartKm) * jbPerKm + parseInt(jbStartMoney));
         } else {
